@@ -1,0 +1,24 @@
+static boolean isWifiConn = false;
+    static int level;
+    static int scale;
+    static double bpt;
+
+
+
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        for (Network network : connMgr.getAllNetworks()){
+            NetworkInfo networkInfo = connMgr.getNetworkInfo(network);
+            if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI){
+                isWifiConn |= networkInfo.isConnected();
+            } else{
+                isWifiConn |= networkInfo.isConnected();
+            }
+        }
+
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = this.registerReceiver(null, ifilter);
+        assert batteryStatus != null;
+        level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        bpt = (level / (double) scale)*100;
